@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -w -g  -Wl,-rpath-link,   -Wl,-z,nodelete -shared  -o InstrumentPass.so CMakeFiles/InstrumentPass.dir/src/Instrument.cpp.o   -L/usr/local/lib  -L/home/lzzd/dse/cmake-build-debug  -L/usr/lib/libz3.so  -Wl,-rpath,"\$ORIGIN/../lib" 

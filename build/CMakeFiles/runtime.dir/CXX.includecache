@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/SymbolicInterpreter.h
+cstdlib
+-
+map
+-
+stack
+-
+vector
+-
+z3++.h
+../include/z3++.h
+
+/home/lzzd/dse/src/Runtime.cpp
+iostream
+-
+llvm/IR/InstrTypes.h
+/home/lzzd/dse/src/llvm/IR/InstrTypes.h
+llvm/IR/Instruction.h
+/home/lzzd/dse/src/llvm/IR/Instruction.h
+SymbolicInterpreter.h
+/home/lzzd/dse/src/SymbolicInterpreter.h
+z3++.h
+/home/lzzd/dse/src/z3++.h
+

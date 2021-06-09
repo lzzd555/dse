@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/Strategy.h
+z3++.h
+../include/z3++.h
+
+/home/lzzd/dse/src/Strategy.cpp
+Strategy.h
+/home/lzzd/dse/src/Strategy.h
+
