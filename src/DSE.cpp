@@ -10,7 +10,7 @@
 
 z3::context Ctx;
 z3::solver Solver(Ctx);
-
+using namespace  std;
 void storeInput() {
   std::ofstream OS(InputFile);
   z3::model Model = Solver.get_model();
@@ -36,10 +36,42 @@ void printNewPathCondition(z3::expr_vector &Vec) {
 
 void generateInput() {
   z3::expr_vector Vec = Ctx.parse_file(FormulaFile);
-
+//  cout << 3 <<endl;
   while (true) {
+      //以下部分用于清除路径条件中的噪音
+      z3::context &c = Vec[Vec.size() - 1].ctx();
+      z3::expr_vector e(c);
+      //cout << "e.size() =" << e.size() << endl;
+      e.push_back(Vec[Vec.size() - 1]);
+      while(true)
+      {
+          bool flag = true;
+          for(int i = 0; i < Vec.size(); i++)
+          {
+              if((Vec[i].to_string() == e[0].to_string()) || (Vec[i].arg(0).to_string() == e[0].arg(0).to_string()))
+              {
+                  e.pop_back();
+                  e.push_back(Vec[Vec.size() - 1]);
+                  Vec.pop_back();
+                  flag = false;
+              }
+          }
+          if(flag)
+          {
+              Vec.push_back(e[0]);
+              break;
+          }
+      }
+      //以上部分用于清除路径条件中的噪音
     searchStrategy(Vec);
-
+//      int size = Vec.size();
+//      cout <<"Vec.size() = "<< size << endl;
+//      for(int i = 0; i < size; i++)
+//      {
+//          //cout << i << endl;
+//          cout << "Vec[" << i << "] : " << Vec[i].to_string() << endl;
+//      }
+//    cout << 3 << endl;
     for (const auto &E : Vec) {
       Solver.add(E);
     }
@@ -66,7 +98,7 @@ int main(int argc, char **argv)
         std::cerr << argv[1] << " not found\n" << std::endl;
         return 1;
     }
-
+    //cout << 1 << endl;
     int MaxIter = INT_MAX;
     if (argc == 3)
     {
@@ -82,11 +114,19 @@ int main(int argc, char **argv)
             std::cout << "Crashing input found (" << Iter << " iters)" << std::endl;
             break;
         }
+//        fstream file;
+//        int ch;
+//        file.open(FormulaFile,ios::in);
+//        ch = file.get();
+//        if(ch == EOF)
+//            cout << "rua\n";
+//        file.close();
         if (stat(FormulaFile, &Buffer))
         {
             std::cerr << FormulaFile << " not found" << std::endl;
             //return 1;
         }
+       // cout << 2 << endl;
         generateInput();
         Iter++;
     }

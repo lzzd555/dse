@@ -38,46 +38,67 @@ for.cond:                                         ; preds = %for.inc, %entry
   %1 = load i32, i32* %x, align 4
   call void @__DSE_Load__(i32 6, i32* %x)
   %cmp = icmp slt i32 %0, %1
+  call void @__DSE_Const__(i32 %1)
+  call void @__DSE_Const__(i32 %0)
+  call void @__DSE_ICmp__(i32 7, i32 52)
   br i1 %cmp, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond
   %2 = load i32, i32* %y, align 4
-  call void @__DSE_Load__(i32 7, i32* %y)
+  call void @__DSE_Load__(i32 8, i32* %y)
   %mul = mul nsw i32 %2, 2
+  call void @__DSE_Const__(i32 2)
+  call void @__DSE_Const__(i32 %2)
+  call void @__DSE_BinOp__(i32 9, i32 16)
   store i32 %mul, i32* %y, align 4
-  call void @__DSE_Const__(i32 %mul)
+  call void @__DSE_Register__(i32 9)
   call void @__DSE_Store__(i32* %y)
   br label %for.inc
 
 for.inc:                                          ; preds = %for.body
   %3 = load i32, i32* %i, align 4
-  call void @__DSE_Load__(i32 8, i32* %i)
+  call void @__DSE_Load__(i32 10, i32* %i)
   %inc = add nsw i32 %3, 1
+  call void @__DSE_Const__(i32 1)
+  call void @__DSE_Const__(i32 %3)
+  call void @__DSE_BinOp__(i32 11, i32 12)
   store i32 %inc, i32* %i, align 4
-  call void @__DSE_Const__(i32 %inc)
+  call void @__DSE_Register__(i32 11)
   call void @__DSE_Store__(i32* %i)
   br label %for.cond
 
 for.end:                                          ; preds = %for.cond
   %4 = load i32, i32* %y, align 4
-  call void @__DSE_Load__(i32 9, i32* %y)
+  call void @__DSE_Load__(i32 12, i32* %y)
   %5 = load i32, i32* %c, align 4
-  call void @__DSE_Load__(i32 10, i32* %c)
+  call void @__DSE_Load__(i32 13, i32* %c)
   %rem = srem i32 %4, %5
+  call void @__DSE_Const__(i32 %5)
+  call void @__DSE_Const__(i32 %4)
+  call void @__DSE_BinOp__(i32 14, i32 22)
   %cmp1 = icmp eq i32 %rem, 17
+  call void @__DSE_Const__(i32 17)
+  call void @__DSE_Const__(i32 14)
+  call void @__DSE_ICmp__(i32 15, i32 52)
   br i1 %cmp1, label %if.then, label %if.end
 
 if.then:                                          ; preds = %for.end
   %6 = load i32, i32* %x, align 4
-  call void @__DSE_Load__(i32 11, i32* %x)
+  call void @__DSE_Load__(i32 16, i32* %x)
   %7 = load i32, i32* %c, align 4
-  call void @__DSE_Load__(i32 12, i32* %c)
+  call void @__DSE_Load__(i32 17, i32* %c)
   %8 = load i32, i32* %c, align 4
-  call void @__DSE_Load__(i32 13, i32* %c)
+  call void @__DSE_Load__(i32 18, i32* %c)
   %sub = sub nsw i32 %7, %8
+  call void @__DSE_Const__(i32 %8)
+  call void @__DSE_Const__(i32 %7)
+  call void @__DSE_BinOp__(i32 19, i32 14)
   %div = sdiv i32 %6, %sub
+  call void @__DSE_Const__(i32 19)
+  call void @__DSE_Const__(i32 %6)
+  call void @__DSE_BinOp__(i32 20, i32 19)
   store i32 %div, i32* %x, align 4
-  call void @__DSE_Const__(i32 %div)
+  call void @__DSE_Register__(i32 20)
   call void @__DSE_Store__(i32* %x)
   br label %if.end
 

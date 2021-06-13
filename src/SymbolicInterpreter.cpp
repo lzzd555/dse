@@ -1,5 +1,4 @@
 #include "SymbolicInterpreter.h"
-
 #include <ctime>
 #include <fstream>
 
@@ -53,10 +52,23 @@ void print(std::ostream &OS) {
 extern "C" void __DSE_Exit__() {
   z3::solver Solver(SI.getContext());
   std::ofstream Branch(BranchFile);
+  //errs() << "?????\n" ;
+  std::vector<int> rua;
   for (auto &E : SI.getPathCondition()) {
-    std::string BID = "B" + std::to_string(E.first);
-    Solver.add(E.second);
-    Branch << BID << "\n";
+      //std::cout << E.first << " " << E.second << std::endl;
+    bool flag = true;
+    for(auto r : rua)
+    {
+        if(r == E.first)
+            flag = false;
+    }
+    if(flag)
+    {
+        std::string BID = "B" + std::to_string(E.first);
+        rua.push_back(E.first);
+        Solver.add(E.second);
+        Branch << BID << "\n";
+    }
   }
   std::ofstream Smt2(FormulaFile);
   Smt2 << Solver.to_smt2();
@@ -68,6 +80,7 @@ extern "C" void __DSE_Init__() {
   std::srand(std::time(nullptr));
   std::string Line;
   std::ifstream Input(InputFile);
+    //errs() << "Init\n";
   if (Input.is_open()) {
     while (getline(Input, Line)) {
       int ID = std::stoi(Line.substr(1, Line.find(",")));
@@ -83,10 +96,14 @@ extern "C" void __DSE_Input__(int *X, int ID) { *X = (int)SI.NewInput(X, ID); }
 extern "C" void __DSE_Branch__(int BID, int RID, int B) {
   MemoryTy &Mem = SI.getMemory();
   Address Addr(RID);
-  z3::expr SE = Mem.at(Addr);
-  z3::expr Cond =
-      B ? SI.getContext().bool_val(true) : SI.getContext().bool_val(false);
-  SI.getPathCondition().push_back(std::make_pair(BID, SE == Cond));
+  if(Mem.find(Addr) != Mem.end())
+  {
+      z3::expr SE = Mem.at(Addr);
+      z3::expr Cond =
+              B ? SI.getContext().bool_val(true) : SI.getContext().bool_val(false);
+      SI.getPathCondition().push_back(std::make_pair(BID, SE == Cond));
+  }
+
 }
 
 extern "C" void __DSE_Const__(int X) {

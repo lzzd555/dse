@@ -7,14 +7,42 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local i32 @main() #0 {
 entry:
   %retval = alloca i32, align 4
+  call void @__DSE_Init__()
   %x = alloca i32, align 4
+  call void @__DSE_Alloca__(i32 0, i32* %x)
   %y = alloca i32, align 4
+  call void @__DSE_Alloca__(i32 1, i32* %y)
   store i32 0, i32* %retval, align 4
+  call void @__DSE_Const__(i32 0)
+  call void @__DSE_Store__(i32* %retval)
   store i32 1, i32* %x, align 4
+  call void @__DSE_Const__(i32 1)
+  call void @__DSE_Store__(i32* %x)
   %0 = load i32, i32* %x, align 4
+  call void @__DSE_Load__(i32 2, i32* %x)
   store i32 %0, i32* %y, align 4
+  call void @__DSE_Register__(i32 2)
+  call void @__DSE_Store__(i32* %y)
   ret i32 0
 }
+
+declare void @__DSE_Init__()
+
+declare void @__DSE_Register__(i32)
+
+declare void @__DSE_Const__(i32)
+
+declare void @__DSE_Alloca__(i32, i32*)
+
+declare void @__DSE_Store__(i32*)
+
+declare void @__DSE_Load__(i32, i32*)
+
+declare void @__DSE_ICmp__(i32, i32)
+
+declare void @__DSE_BinOp__(i32, i32)
+
+declare void @__DSE_Branch__(i32, i32, i32)
 
 attributes #0 = { noinline nounwind optnone uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
 

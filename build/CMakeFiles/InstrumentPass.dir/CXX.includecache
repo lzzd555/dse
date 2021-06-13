@@ -23,6 +23,4 @@ llvm/Pass.h
 /home/lzzd/dse/src/Instrument.cpp
 Instrument.h
 /home/lzzd/dse/src/Instrument.h
-iostream
-/home/lzzd/dse/src/iostream
 
